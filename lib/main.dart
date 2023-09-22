@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cakendar_app02/page/event_editing_page.dart';
+import 'package:flutter_cakendar_app02/provider/event_provider.dart';
 import 'package:flutter_cakendar_app02/widget/calendar_widget.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,20 +14,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: title,
-      themeMode: ThemeMode.dark,
-      darkTheme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: Color.fromARGB(
-          176,
-          0,
-          0,
-          0,
+    return ChangeNotifierProvider(
+      create: (context) => EventProvider(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: title,
+        themeMode: ThemeMode.light,
+        darkTheme: ThemeData.dark().copyWith(
+          scaffoldBackgroundColor: Color.fromARGB(111, 112, 109, 109),
+          primaryColor: Colors.lightBlue,
         ),
-        primaryColor: Colors.lightBlue,
+        home: MainPage(),
       ),
-      home: MainPage(),
     );
   }
 }
