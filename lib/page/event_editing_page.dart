@@ -1,7 +1,9 @@
-import 'dart:html';
-import 'dart:ui';
+// import 'dart:html';
+// import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_cakendar_app02/model/event.dart';
+import 'package:flutter_cakendar_app02/provider/event_provider.dart';
 import 'package:flutter_cakendar_app02/utils.dart';
 import 'package:provider/provider.dart';
 
@@ -64,7 +66,7 @@ class _EventEditingPageState extends State<EventEditingPage> {
               primary: Colors.transparent,
               shadowColor: Colors.transparent,
             ),
-            onPressed: () {},
+            onPressed: saveForm,
             icon: Icon(Icons.done),
             label: Text('SAVE'))
       ];
@@ -75,7 +77,7 @@ class _EventEditingPageState extends State<EventEditingPage> {
           border: UnderlineInputBorder(),
           hintText: 'Add Title',
         ),
-        onFieldSubmitted: (_) {},
+        onFieldSubmitted: (_) => saveForm(),
         validator: (title) =>
             title != null && title.isEmpty ? 'Title cannot be empty' : null,
         controller: titleController,
@@ -202,6 +204,25 @@ class _EventEditingPageState extends State<EventEditingPage> {
           DateTime(initialDate.year, initialDate.month, initialDate.day);
       final time = Duration(hours: timeOfDay.hour, minutes: timeOfDay.minute);
       return date.add(time);
+    }
+  }
+
+  Future saveForm() async {
+    final isValid = _formKey.currentState!.validate();
+
+    if (isValid) {
+      final event = Event(
+        title: titleController.text,
+        description: 'description',
+        from: fromDate,
+        to: toDate,
+        isAllDay: false,
+      );
+
+      final provider = Provider.of<EventProvider>(context, listen: false);
+      provider.addEvent(event);
+
+      Navigator.of(context).pop();
     }
   }
 }
